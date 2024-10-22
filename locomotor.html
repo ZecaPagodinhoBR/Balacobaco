@@ -1,1 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo: Sistema Locomotor</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <h1>Sistema Locomotor - Quiz</h1>
+        <div id="question-container">
+            <p id="question">Qual é o maior osso do corpo humano?</p>
+            <div class="answers">
+                <button class="answer">Fêmur</button>
+                <button class="answer">Tíbia</button>
+                <button class="answer">Úmero</button>
+                <button class="answer">Rádio</button>
+            </div>
+        </div>
+        <div id="feedback"></div>
+        <button id="next-btn" class="next-btn">Próxima Pergunta</button>
+    </div>
+
+    <script>
+        const questionElement = document.getElementById('question');
+        const answerButtons = document.querySelectorAll('.answer');
+        const nextButton = document.getElementById('next-btn');
+        const feedbackElement = document.getElementById('feedback');
+        
+        const questions = [
+            { question: "Qual é o maior osso do corpo humano?", correct: "Fêmur", options: ["Fêmur", "Tíbia", "Úmero", "Rádio"] },
+            { question: "Quantos músculos tem o corpo humano?", correct: "650", options: ["650", "1000", "850", "450"] },
+            { question: "Qual é a função dos tendões?", correct: "Conectar músculos aos ossos", options: ["Proteger órgãos", "Conectar músculos aos ossos", "Produzir sangue", "Sustentar o corpo"] }
+        ];
+        
+        let currentQuestionIndex = 0;
+
+        function showQuestion() {
+            const currentQuestion = questions[currentQuestionIndex];
+            questionElement.textContent = currentQuestion.question;
+            answerButtons.forEach((button, index) => {
+                button.textContent = currentQuestion.options[index];
+                button.onclick = () => checkAnswer(button.textContent);
+            });
+        }
+
+        function checkAnswer(selectedAnswer) {
+            const correctAnswer = questions[currentQuestionIndex].correct;
+            if (selectedAnswer === correctAnswer) {
+                feedbackElement.textContent = "Correto!";
+                feedbackElement.classList.add("correct");
+            } else {
+                feedbackElement.textContent = `Errado! A resposta correta é ${correctAnswer}.`;
+                feedbackElement.classList.add("wrong");
+            }
+            nextButton.style.display = 'block';
+        }
+
+        function nextQuestion() {
+            feedbackElement.textContent = '';
+            feedbackElement.classList.remove("correct", "wrong");
+            nextButton.style.display = 'none';
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                showQuestion();
+            } else {
+                questionElement.textContent = "Fim do jogo! Você completou todas as perguntas.";
+                document.querySelector('.answers').style.display = 'none';
+                nextButton.style.display = 'none';
+            }
+        }
+
+        nextButton.addEventListener('click', nextQuestion);
+        showQuestion();
+    </script>
+</body>
+</html>
 
